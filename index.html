@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="DeviceDoctor Preisrechner: Gerät auswählen, Schaden auswählen, Preis sofort sehen. Ohne Tracking, ohne Cookies."
+    />
+    <title>DeviceDoctor Preisrechner</title>
+    <link rel="icon" href="./assets/logo-square.png" />
+    <link rel="preload" as="image" href="./assets/logo-banner.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="hero">
+          <div class="hero-left">
+            <div class="hero-badge">Ohne Cookies • Ohne Tracking • DSGVO-freundlich</div>
+            <h1 class="hero-title">Preisrechner</h1>
+            <p class="subhead">
+              Wähle Gerät und Schaden – du bekommst sofort einen transparenten Richtpreis.
+            </p>
+          </div>
+          <div class="hero-right" aria-hidden="true">
+            <div class="banner-frame">
+              <img
+                class="brand"
+                src="./assets/logo-banner.png"
+                width="800"
+                height="250"
+                alt=""
+                decoding="async"
+                loading="eager"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      <section class="card wizard" aria-live="polite">
+        <div class="wizard-top">
+          <div class="wizard-steps" role="list" aria-label="Schritte">
+            <button class="wstep" type="button" data-step-btn="0" role="listitem">
+              <span class="wstep-num" aria-hidden="true">1</span>
+              <span class="wstep-label">Gerät</span>
+            </button>
+            <button class="wstep" type="button" data-step-btn="1" role="listitem" disabled>
+              <span class="wstep-num" aria-hidden="true">2</span>
+              <span class="wstep-label">Modell</span>
+            </button>
+            <button class="wstep" type="button" data-step-btn="2" role="listitem" disabled>
+              <span class="wstep-num" aria-hidden="true">3</span>
+              <span class="wstep-label">Schaden</span>
+            </button>
+            <button class="wstep" type="button" data-step-btn="3" role="listitem" disabled>
+              <span class="wstep-num" aria-hidden="true">4</span>
+              <span class="wstep-label">Preis</span>
+            </button>
+          </div>
+          <div class="wizard-bar" aria-hidden="true">
+            <div id="wizardBarFill" class="wizard-bar-fill"></div>
+          </div>
+        </div>
+
+        <form id="calcForm" class="form" autocomplete="off" novalidate>
+          <div class="wizard-viewport">
+            <div id="wizardSlides" class="wizard-slides">
+              <section class="wizard-slide" aria-label="Schritt 1: Gerät auswählen">
+                <h2 class="slide-title">Welches Gerät ist es?</h2>
+                <p class="slide-sub">Wähle die Kategorie (z. B. iPhone, Samsung Galaxy, iPad, MacBook).</p>
+
+                <label class="field">
+                  <span class="label">Kategorie</span>
+                  <select id="category" name="category" required>
+                    <option value="" selected disabled>Bitte auswählen…</option>
+                  </select>
+                  <span class="hint">Danach geht’s direkt weiter zum Modell.</span>
+                </label>
+              </section>
+
+              <section class="wizard-slide" aria-label="Schritt 2: Modell auswählen">
+                <h2 class="slide-title">Welches Modell genau?</h2>
+                <p class="slide-sub">Wähle das passende Modell aus der Liste.</p>
+
+                <label class="field">
+                  <span class="label">Modell</span>
+                  <select id="model" name="model" required disabled>
+                    <option value="" selected disabled>Bitte zuerst Kategorie wählen…</option>
+                  </select>
+                  <span class="hint">Liste basiert auf deiner aktuellen Preisliste.</span>
+                </label>
+              </section>
+
+              <section class="wizard-slide" aria-label="Schritt 3: Schaden auswählen">
+                <h2 class="slide-title">Was ist kaputt?</h2>
+                <p class="slide-sub">Wähle den Schaden. Wenn du dir unsicher bist, nimm „Anderes/unklar“.</p>
+
+                <label class="field">
+                  <span class="label">Schaden / Reparatur</span>
+                  <select id="repair" name="repair" required disabled>
+                    <option value="" selected disabled>Bitte zuerst Modell wählen…</option>
+                  </select>
+                  <span class="hint">Bei „Anderes/unklar“ kannst du Symptome anklicken.</span>
+                </label>
+
+                <div id="unclearBox" class="unclear" hidden>
+                  <div class="unclear-head">
+                    <div>
+                      <div class="unclear-title">Anderes/unklarer Schaden</div>
+                      <p class="unclear-desc">
+                        Für unklare Fälle bekommst du hier einen passenden Text, den du mir direkt schicken kannst.
+                      </p>
+                    </div>
+                  </div>
+
+                  <fieldset class="chips">
+                    <legend class="sr-only">Symptome auswählen</legend>
+                    <label class="chip"><input type="checkbox" value="Display reagiert nicht / Glas gebrochen" />Display</label>
+                    <label class="chip"><input type="checkbox" value="Akku schnell leer / geht aus" />Akku</label>
+                    <label class="chip"><input type="checkbox" value="Lädt nicht / Wackelkontakt" />Laden</label>
+                    <label class="chip"><input type="checkbox" value="Kamera unscharf / defekt" />Kamera</label>
+                    <label class="chip"><input type="checkbox" value="Wasserschaden / Feuchtigkeit" />Wasser</label>
+                    <label class="chip"><input type="checkbox" value="Geht nicht an / Bootloop" />Start</label>
+                    <label class="chip"><input type="checkbox" value="Ton/Mikro/Anrufproblem" />Audio</label>
+                    <label class="chip"><input type="checkbox" value="Sonstiges" />Sonstiges</label>
+                  </fieldset>
+
+                  <label class="field">
+                    <span class="label">Kurze Beschreibung (optional)</span>
+                    <textarea
+                      id="notes"
+                      name="notes"
+                      rows="3"
+                      placeholder="Kurz beschreiben (z. B. „runtergefallen, seitdem flackert das Display“)…"
+                    ></textarea>
+                    <span class="hint">Wird nur lokal im Browser verwendet, nichts wird übertragen.</span>
+                  </label>
+                </div>
+              </section>
+
+              <section class="wizard-slide" aria-label="Schritt 4: Preis anzeigen">
+                <div class="result-top">
+                  <div>
+                    <div class="kicker">Dein Richtpreis</div>
+                    <div id="price" class="price">—</div>
+                    <div id="priceNote" class="price-note">Bitte Auswahl treffen.</div>
+                  </div>
+                  <div class="result-actions">
+                    <button id="copyBtn" class="btn" type="button" disabled>Text kopieren</button>
+                    <a id="mailtoBtn" class="btn btn-ghost" href="#" aria-disabled="true">E-Mail öffnen</a>
+                    <a id="telBtn" class="btn btn-ghost" href="#" aria-disabled="true">Anrufen</a>
+                  </div>
+                </div>
+
+                <div class="summary">
+                  <div class="summary-title">Zusammenfassung</div>
+                  <pre id="summaryText" class="summary-box">—</pre>
+                  <p class="micro">
+                    Hinweis: Preise sind Richtwerte basierend auf deiner Preisliste. Bei nicht gelisteten Modellen oder
+                    Mehrfachschäden kann der Endpreis abweichen.
+                  </p>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <button id="backBtn" class="btn btn-ghost" type="button" disabled>Zurück</button>
+            <div class="wizard-nav-spacer"></div>
+            <button id="nextBtn" class="btn" type="button">Weiter</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card fineprint">
+        <div class="fine-grid fine-grid-one">
+          <div>
+            <h2 class="h2">Datenschutz</h2>
+            <p>
+              Diese Seite funktioniert komplett lokal im Browser: keine Cookies, kein Tracking, kein
+              Server. Wenn du E-Mail/Telefon nutzt, öffnet dein Gerät nur das jeweilige Programm.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <img
+            class="logo-small"
+            src="./assets/logo-square.png"
+            width="48"
+            height="48"
+            alt=""
+            decoding="async"
+            loading="lazy"
+          />
+          <div>
+            <div class="footer-brand">DeviceDoctor</div>
+            <div class="micro">Reparatur für alle</div>
+          </div>
+        </div>
+        <div class="footer-right">
+          <button id="imprintOpen" class="linklike" type="button">Impressum</button>
+          <div class="micro">© <span id="year"></span> • Preisrechner</div>
+        </div>
+      </div>
+    </footer>
+
+    <dialog id="imprintDialog" class="dialog">
+      <div class="dialog-inner">
+        <div class="dialog-head">
+          <div>
+            <div class="dialog-title">Impressum</div>
+            <div class="dialog-sub">Angaben gemäß § 5 TMG</div>
+          </div>
+          <button id="imprintClose" class="iconbtn" type="button" aria-label="Impressum schließen">
+            ✕
+          </button>
+        </div>
+
+        <div class="dialog-body">
+          <p class="imprint-strong">Digitalagentur Linkify – Luis Schleicherdt<br />Boyneburgufer 2<br />99089 Erfurt</p>
+
+          <h3 class="h3">Kontakt</h3>
+          <p>Telefon: +49 155 63477504<br />E-Mail: info@linkify.tech</p>
+
+          <h3 class="h3">Umsatzsteuer</h3>
+          <p>Umsatzsteuer-ID: Gemäß § 19 UStG wird keine Umsatzsteuer berechnet (Kleinunternehmerregelung).</p>
+
+          <h3 class="h3">Verantwortlich für den Inhalt</h3>
+          <p>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:<br />Luis Schleicherdt<br />Boyneburgufer 2<br />99089 Erfurt</p>
+
+          <h3 class="h3">Streitschlichtung</h3>
+          <p>
+            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+            <a class="inline-link" href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noreferrer">ec.europa.eu/consumers/odr</a>.
+            Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+          </p>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="./prices.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
